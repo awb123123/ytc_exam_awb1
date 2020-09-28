@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ytc.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.ytc.model.User" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="userPwd" property="userpwd" jdbcType="VARCHAR" />
+    <result column="userAnswerOne" property="useranswerone" jdbcType="VARCHAR" />
+    <result column="userAnswerTwo" property="useranswertwo" jdbcType="VARCHAR" />
+    <result column="userAnswerThree" property="useranswerthree" jdbcType="VARCHAR" />
+    <result column="userImgOne" property="userimgone" jdbcType="VARCHAR" />
+    <result column="userImgTwo" property="userimgtwo" jdbcType="VARCHAR" />
+    <association property="problem1" javaType="com.ytc.model.Problem1">
+      <id column="Problemid1" property="problemid1" jdbcType="INTEGER" />
+      <result column="problemName" property="problemname" jdbcType="VARCHAR" />
+    </association>
+    <association property="problem2" javaType="com.ytc.model.Problem2">
+      <id column="Problemid2" property="problemid2" jdbcType="INTEGER" />
+      <result column="problemName2" property="problemname2" jdbcType="VARCHAR" />
+    </association>
+    <association property="problem3" javaType="com.ytc.model.Problem3">
+      <id column="Problemid3" property="problemid3" jdbcType="INTEGER" />
+      <result column="problemName3" property="problemname3" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, userName, userPwd, userProblemOne, userAnswerOne, userProblemTwo, userAnswerTwo, 
+    userProblemThree, userAnswerThree, userImgOne, userImgTwo
+  </sql>
+
+  <select id="queryCount" resultType="long">
+
+    select count(*) from t_user
+  </select>
+  <select id="querUser" resultMap="BaseResultMap" >
+    select 
+    *
+    from t_user tu left join t_problem1 t1 on tu.userProblemOne=t1.Problemid1
+    left join t_problem2 t2 on tu.userProblemTwo=t2.Problemid2
+    left join t_problem3 t3 on tu.userProblemThree=t3.Problemid3
+    limit #{start},#{pageSize}
+
+  </select>
+  <select id="queryUserByName" parameterType="com.ytc.model.User" resultMap="BaseResultMap"  >
+   select
+    *
+    from t_user tu left join t_problem1 t1 on tu.userProblemOne=t1.Problemid1
+    left join t_problem2 t2 on tu.userProblemTwo=t2.Problemid2
+    left join t_problem3 t3 on tu.userProblemThree=t3.Problemid3
+    where userName = #{username}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ytc.model.User" >
+    insert into t_user (userId, userName, userPwd, 
+      userProblemOne, userAnswerOne, userProblemTwo, 
+      userAnswerTwo, userProblemThree, userAnswerThree, 
+      userImgOne, userImgTwo)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userpwd,jdbcType=VARCHAR}, 
+      #{userproblemone,jdbcType=INTEGER}, #{useranswerone,jdbcType=VARCHAR}, #{userproblemtwo,jdbcType=INTEGER}, 
+      #{useranswertwo,jdbcType=VARCHAR}, #{userproblemthree,jdbcType=INTEGER}, #{useranswerthree,jdbcType=VARCHAR}, 
+      #{userimgone,jdbcType=VARCHAR}, #{userimgtwo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ytc.model.User" >
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="userpwd != null" >
+        userPwd,
+      </if>
+      <if test="userproblemone != null" >
+        userProblemOne,
+      </if>
+      <if test="useranswerone != null" >
+        userAnswerOne,
+      </if>
+      <if test="userproblemtwo != null" >
+        userProblemTwo,
+      </if>
+      <if test="useranswertwo != null" >
+        userAnswerTwo,
+      </if>
+      <if test="userproblemthree != null" >
+        userProblemThree,
+      </if>
+      <if test="useranswerthree != null" >
+        userAnswerThree,
+      </if>
+      <if test="userimgone != null" >
+        userImgOne,
+      </if>
+      <if test="userimgtwo != null" >
+        userImgTwo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null" >
+        #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemone != null" >
+        #{userproblemone,jdbcType=INTEGER},
+      </if>
+      <if test="useranswerone != null" >
+        #{useranswerone,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemtwo != null" >
+        #{userproblemtwo,jdbcType=INTEGER},
+      </if>
+      <if test="useranswertwo != null" >
+        #{useranswertwo,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemthree != null" >
+        #{userproblemthree,jdbcType=INTEGER},
+      </if>
+      <if test="useranswerthree != null" >
+        #{useranswerthree,jdbcType=VARCHAR},
+      </if>
+      <if test="userimgone != null" >
+        #{userimgone,jdbcType=VARCHAR},
+      </if>
+      <if test="userimgtwo != null" >
+        #{userimgtwo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ytc.model.User" >
+    update t_user
+    <set >
+      <if test="username != null" >
+        userName = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null" >
+        userPwd = #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemone != null" >
+        userProblemOne = #{userproblemone,jdbcType=INTEGER},
+      </if>
+      <if test="useranswerone != null" >
+        userAnswerOne = #{useranswerone,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemtwo != null" >
+        userProblemTwo = #{userproblemtwo,jdbcType=INTEGER},
+      </if>
+      <if test="useranswertwo != null" >
+        userAnswerTwo = #{useranswertwo,jdbcType=VARCHAR},
+      </if>
+      <if test="userproblemthree != null" >
+        userProblemThree = #{userproblemthree,jdbcType=INTEGER},
+      </if>
+      <if test="useranswerthree != null" >
+        userAnswerThree = #{useranswerthree,jdbcType=VARCHAR},
+      </if>
+      <if test="userimgone != null" >
+        userImgOne = #{userimgone,jdbcType=VARCHAR},
+      </if>
+      <if test="userimgtwo != null" >
+        userImgTwo = #{userimgtwo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ytc.model.User" >
+    update t_user
+    set userName = #{username,jdbcType=VARCHAR},
+      userPwd = #{userpwd,jdbcType=VARCHAR},
+      userProblemOne = #{userproblemone,jdbcType=INTEGER},
+      userAnswerOne = #{useranswerone,jdbcType=VARCHAR},
+      userProblemTwo = #{userproblemtwo,jdbcType=INTEGER},
+      userAnswerTwo = #{useranswertwo,jdbcType=VARCHAR},
+      userProblemThree = #{userproblemthree,jdbcType=INTEGER},
+      userAnswerThree = #{useranswerthree,jdbcType=VARCHAR},
+      userImgOne = #{userimgone,jdbcType=VARCHAR},
+      userImgTwo = #{userimgtwo,jdbcType=VARCHAR}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

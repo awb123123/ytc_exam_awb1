@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ytc.mapper.Problem2Mapper" >
+  <resultMap id="BaseResultMap" type="com.ytc.model.Problem2" >
+    <id column="Problemid2" property="problemid2" jdbcType="INTEGER" />
+    <result column="problemName2" property="problemname2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Problemid2, problemName2
+  </sql>
+  <select id="queryProblem2" resultMap="BaseResultMap"  >
+    select  *
+    from t_problem2
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_problem2
+    where Problemid2 = #{problemid2,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ytc.model.Problem2" >
+    insert into t_problem2 (Problemid2, problemName2)
+    values (#{problemid2,jdbcType=INTEGER}, #{problemname2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ytc.model.Problem2" >
+    insert into t_problem2
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="problemid2 != null" >
+        Problemid2,
+      </if>
+      <if test="problemname2 != null" >
+        problemName2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="problemid2 != null" >
+        #{problemid2,jdbcType=INTEGER},
+      </if>
+      <if test="problemname2 != null" >
+        #{problemname2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ytc.model.Problem2" >
+    update t_problem2
+    <set >
+      <if test="problemname2 != null" >
+        problemName2 = #{problemname2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Problemid2 = #{problemid2,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ytc.model.Problem2" >
+    update t_problem2
+    set problemName2 = #{problemname2,jdbcType=VARCHAR}
+    where Problemid2 = #{problemid2,jdbcType=INTEGER}
+  </update>
+</mapper>
